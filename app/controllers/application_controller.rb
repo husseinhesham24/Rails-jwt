@@ -5,9 +5,7 @@ class ApplicationController < ActionController::API
 
   def authorize_request
     header = request.headers['Authorization']
-    debugger
     header = header.split(' ').last if header
-    debugger
     begin
       @decode = JsonWebToken.decode(header)
       @current_user = User.find(@decode[:user_id])
