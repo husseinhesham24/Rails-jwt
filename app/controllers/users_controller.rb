@@ -9,7 +9,15 @@ class UsersController < ApplicationController
   end
 
   def show
-    render json: @user, status: :ok
+    render json: {
+      "id": @current_user.id,
+      "username": @current_user.username,
+      "email": @current_user.email,
+      "admin": @current_user.admin,
+      "created_at": @current_user.created_at,
+      "updated_at": @current_user.updated_at
+    }, status: :ok
+
   end
 
   def create
