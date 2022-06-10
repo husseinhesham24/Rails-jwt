@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
 
   before_action :authorize_request, except: %i[ create ]
-  before_action :set_user, except: %i[create index]
 
   def index
     @users = User.all
@@ -17,7 +16,6 @@ class UsersController < ApplicationController
       "created_at": @current_user.created_at,
       "updated_at": @current_user.updated_at
     }, status: :ok
-
   end
 
   def create
@@ -37,8 +35,20 @@ class UsersController < ApplicationController
   end
 
   def update
-    unless @user.update(user_params)
-      render json: {errors: @user.errors.full_messages}, status: :unprocessable_entity
+    if @current_user.update(
+      username: (params[:username].presence)?params[:username]:(:username),
+      password: (params[:password].presence)?params[:password]:(:password_digest),
+    )
+      render json: {
+        "id": @current_user.id,
+        "username": @current_user.username,
+        "email": @current_user.email,
+        "admin": @current_user.admin,
+        "created_at": @current_user.created_at,
+        "updated_at": @current_user.updated_at
+      }, status: :ok
+    else
+      render json: {errors: @current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -48,13 +58,6 @@ class UsersController < ApplicationController
 
   private
 
-  def set_user
-    begin
-      @user = User.find_by_username(params[:username])
-    rescue ActiveRecord::RecordNotFound => e
-      render json: {errors: e.message}, status: :not_found
-    end
-  end
 
   def user_params
     params.permit(:username, :email, :password, :password_confirmation)
