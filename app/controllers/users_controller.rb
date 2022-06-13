@@ -35,10 +35,8 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @current_user.update(
-      username: (params[:username].presence)?params[:username]:(:username),
-      password: (params[:password].presence)?params[:password]:(:password_digest),
-    )
+    if @current_user.update(params.require(:user).permit(:username))
+
       render json: {
         "id": @current_user.id,
         "username": @current_user.username,

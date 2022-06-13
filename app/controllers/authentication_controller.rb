@@ -7,13 +7,8 @@ class AuthenticationController < ApplicationController
     if @user&.authenticate(params[:password])
       token = JsonWebToken.encode({user_id:@user.id})
       time = Time.now + 30.days.to_i
-      jti = JwtToken.find_by_user_id(@user.id)
-      if jti.nil?
-        @current_jti = JwtToken.create(token:token, exp:time, user_id:@user.id)
-      else
-        @current_jti = jti.update(token:token, exp:time)
-      end
-
+      @user.update(token:token)
+      debugger
       render json: {
         token: token,
         exp: time.strftime("%m-%d-%Y %H:%M"),
