@@ -17,7 +17,17 @@ class AuthenticationController < ApplicationController
         }
       }, status: :ok
     else
-      render json: {errors: "unauthorizedlool2"}, status: :unauthorized
+      render json: {errors: "unauthorized"}, status: :unauthorized
+    end
+  end
+
+  def logout
+    if @current_user.update(token: nil)
+      render json: {
+        message: "logged out successfully"
+      }, status: :ok
+    else
+      render json: {errors: @current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
