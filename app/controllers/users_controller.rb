@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    @user = User.new(user_params_create)
     if @user.save
       render json: {
         "id": @user.id,
@@ -35,8 +35,23 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @current_user.update(params.require(:user).permit(:username))
+    done = true
+    if params[:user][:username].present?
+      if @current_user.update(user_params_update_username)
+      else
+        done = false
+        render json: {errors: @current_user.errors.full_messages}, status: :unprocessable_entity
+      end
+    end
+    if params[:user][:password].present?
+      if @current_user.update(user_params_update_password)
+      else
+        done = false
+        render json: {errors: @current_user.errors.full_messages}, status: :unprocessable_entity
+      end
+    end
 
+    if done
       render json: {
         "id": @current_user.id,
         "username": @current_user.username,
@@ -45,8 +60,6 @@ class UsersController < ApplicationController
         "created_at": @current_user.created_at,
         "updated_at": @current_user.updated_at
       }, status: :ok
-    else
-      render json: {errors: @current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -59,8 +72,15 @@ class UsersController < ApplicationController
 
   private
 
+  def user_params_create
+    params.require(:user).permit(:username, :email, :password, :password_confirmation)
+  end
 
-  def user_params
-    params.permit(:username, :email, :password, :password_confirmation)
+  def user_params_update_username
+    params.require(:user).permit(:username)
+  end
+
+  def user_params_update_password
+    params.require(:user).permit(:password, :password_confirmation)
   end
 end
