@@ -13,7 +13,7 @@ class AuthenticationController < ApplicationController
         @user.update(token: token)
         render json: {
           token: token,
-          exp: time.strftime("%m-%d-%Y %H:%M"),
+          exp: time.strftime("%d-%m-%Y %H:%M"),
           user: {
             username: @user.username,
             email: @user.email
