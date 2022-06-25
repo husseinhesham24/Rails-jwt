@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 
   before_action :authorize_request, except: %i[ create ]
 
+  #for admin
   def index
     @users = User.all
     render json: @users, status: :ok
@@ -13,6 +14,7 @@ class UsersController < ApplicationController
       "username": @current_user.username,
       "email": @current_user.email,
       "admin": @current_user.admin,
+      "todos": @current_user.todos,
       "created_at": @current_user.created_at,
       "updated_at": @current_user.updated_at
     }, status: :ok
