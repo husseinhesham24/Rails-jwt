@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post 'todo/update', to:'todos#update'
   post 'todo/delete', to:'todos#destroy'
 
+  get 'categories', to:'categories#index'
   post 'category/create', to:'categories#create'
   post 'category/update', to:'categories#update'
   post 'category/delete', to:'categories#destroy'

@@ -2,6 +2,12 @@ class CategoriesController < ApplicationController
 
   before_action :authorize_request
 
+  def index
+    render json: {
+      "categories":Category.all.sort
+    }, status: :ok
+  end
+
   def create
     @category = Category.new(category_params_create)
     if @category.save
@@ -21,7 +27,6 @@ class CategoriesController < ApplicationController
         "category":@category
       }, status: :ok
     else
-      done = false
       render json: {errors: @todo.errors.full_messages}, status: :unprocessable_entity
     end
 
