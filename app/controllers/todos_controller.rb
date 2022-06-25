@@ -56,6 +56,16 @@ class TodosController < ApplicationController
     render json:{errors: e}
   end
 
+  def destroy
+    @todo = Todo.find(todo_params[:id])
+    @todo.destroy
+    render json: {
+      "message":"Deleted successfully"
+    }, status: :ok
+  rescue ActiveRecord::RecordNotFound => e
+    render json:{errors: e}
+  end
+
   private
 
   def todo_params_create

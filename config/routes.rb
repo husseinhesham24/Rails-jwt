@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   post 'todo/create', to:'todos#create'
   post 'todo/update', to:'todos#update'
+  post 'todo/delete', to:'todos#destroy'
 
   get '/*a', to: 'application#not_found'
 end
