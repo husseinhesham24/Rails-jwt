@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   post  'auth/logout', to: 'authentication#logout'
 
   post 'todo/create', to:'todos#create'
+  post 'todo/update', to:'todos#update'
 
   get '/*a', to: 'application#not_found'
 end
