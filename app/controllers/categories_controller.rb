@@ -15,7 +15,7 @@ class CategoriesController < ApplicationController
         "category":@category
       }, status: :created
     else
-      render json: {errors: @todo.errors.full_messages}, status: :unprocessable_entity
+      render json: {errors: @category.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -27,7 +27,7 @@ class CategoriesController < ApplicationController
         "category":@category
       }, status: :ok
     else
-      render json: {errors: @todo.errors.full_messages}, status: :unprocessable_entity
+      render json: {errors: @category.errors.full_messages}, status: :unprocessable_entity
     end
 
   rescue ActiveRecord::RecordNotFound => e
