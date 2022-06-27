@@ -30,8 +30,8 @@ class CategoriesController < ApplicationController
       render json: {errors: @category.errors.full_messages}, status: :unprocessable_entity
     end
 
-  rescue ActiveRecord::RecordNotFound => e
-    render json:{errors: e}
+  rescue ActiveRecord::RecordNotFound
+    render json:{errors: "Category is not found"}, status: :not_found
   end
 
   def destroy
@@ -40,8 +40,8 @@ class CategoriesController < ApplicationController
     render json: {
       "message":"Deleted successfully"
     }, status: :ok
-  rescue ActiveRecord::RecordNotFound => e
-    render json:{errors: e}
+  rescue ActiveRecord::RecordNotFound
+    render json:{errors: "Category is not found"}, status: :not_found
   end
 
   private

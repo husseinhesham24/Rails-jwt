@@ -8,13 +8,19 @@ class UsersController < ApplicationController
     render json: @users, status: :ok
   end
 
+  def get_logos
+    render json: {
+      'todos':@current_user.todos.sort
+    },status: :ok
+  end
+
   def show
     render json: {
       "id": @current_user.id,
       "username": @current_user.username,
       "email": @current_user.email,
       "admin": @current_user.admin,
-      "todos": @current_user.todos,
+      "todos": @current_user.todos.sort,
       "created_at": @current_user.created_at,
       "updated_at": @current_user.updated_at
     }, status: :ok

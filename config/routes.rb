@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get 'user/profile', to:'users#show'
   post 'user/update', to:'users#update'
   post 'user/delete', to:'users#destroy'
+  get 'user/todos', to:'users#get_logos'
+
   post 'auth/login', to: 'authentication#login'
   post  'auth/logout', to: 'authentication#logout'
 

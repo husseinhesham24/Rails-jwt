@@ -1,6 +1,7 @@
 class TodosController < ApplicationController
   before_action :authorize_request
 
+
   def create
     @todo = Todo.new(todo_params_create)
     @todo.user = @current_user
@@ -11,7 +12,7 @@ class TodosController < ApplicationController
         "todo": @todo.todo,
         "status": @todo.status,
         "user_id":@todo.user.id,
-        "category_id":@todo.category.id,
+        "category":@todo.category,
         "created_at": @todo.created_at,
         "updated_at": @todo.updated_at
       }, status: :created
@@ -23,7 +24,7 @@ class TodosController < ApplicationController
   def update
     @todo = Todo.find(todo_params[:id])
     done = true
-    if params[:todo].present?
+    if @todo.user_id==@current_user.id && params[:todo].present?
       if @todo.update(todo_params_update_todo)
       else
         done = false
@@ -52,18 +53,24 @@ class TodosController < ApplicationController
       }, status: :ok
     end
 
-  rescue ActiveRecord::RecordNotFound => e
-    render json:{errors: e}
+  rescue ActiveRecord::RecordNotFound
+    render json:{errors: "Todo is not exist"}, status: :not_found
   end
 
   def destroy
     @todo = Todo.find(todo_params[:id])
-    @todo.destroy
-    render json: {
-      "message":"Deleted successfully"
-    }, status: :ok
-  rescue ActiveRecord::RecordNotFound => e
-    render json:{errors: e}
+    if @todo.user_id==@current_user.id
+      @todo.destroy
+      render json: {
+        "message":"Deleted successfully"
+      }, status: :ok
+    else
+      render json: {
+        "message":"ya hacker mesh ana ely yat3ml m3ah el7rkat de"
+      }, status: :unprocessable_entity
+    end
+  rescue ActiveRecord::RecordNotFound
+    render json:{errors: "Todo is not exist"}, status: :not_found
   end
 
   private

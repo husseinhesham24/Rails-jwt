@@ -18,7 +18,6 @@ class AuthenticationController < ApplicationController
             username: @user.username,
             email: @user.email
           },
-          "todos": @user.todos
         }, status: :ok
       else
         render json: {errors: "Password is invalid"}, status: :unprocessable_entity

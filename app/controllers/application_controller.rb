@@ -13,8 +13,8 @@ class ApplicationController < ActionController::API
       if @current_user.token.nil? || @current_user[:token]!=header
         render json: {errors: "unauthorized"}, status: :unauthorized
       end
-    rescue ActiveRecord::RecordNotFound => e
-      render json: {errors: e.message}, status: :unauthorized
+    rescue ActiveRecord::RecordNotFound
+      render json: {errors: "User is not exist"}, status: :unauthorized
     rescue JWT::DecodeError => e
       render json: {errors: e.message}, status: :unauthorized
     end
