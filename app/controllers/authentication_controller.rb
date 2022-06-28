@@ -36,6 +36,16 @@ class AuthenticationController < ApplicationController
     end
   end
 
+  def ref_token
+    token = JsonWebToken.encode({user_id:@current_user.id})
+    time = Time.now + 30.days.to_i
+    @current_user.update(token: token)
+    render json: {
+      token: token,
+      exp: time.strftime("%d-%m-%Y %H:%M"),
+    }, status: :ok
+  end
+
   private
 
   def login_params

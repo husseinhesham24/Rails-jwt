@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   get 'user/todos', to:'users#get_logos'
 
   post 'auth/login', to: 'authentication#login'
-  post  'auth/logout', to: 'authentication#logout'
+  post 'auth/logout', to: 'authentication#logout'
+  post 'auth/refresh', to: 'authentication#ref_token'
 
   post 'todo/create', to:'todos#create'
   post 'todo/update', to:'todos#update'
