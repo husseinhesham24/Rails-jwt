@@ -9,18 +9,51 @@ class UsersController < ApplicationController
   end
 
   def get_logos
+    sql = "select
+           todos.id as id,
+           todos.todo as todo,
+           todos.status as status,
+           categories.id as category_id,
+           categories.name as catName
+           from
+           users
+           join todos on todos.user_id = users.id
+           join categories on todos.category_id = categories.id
+           where
+            users.id = #{@current_user.id}
+           ORDER BY todos.id ASC;"
+
+    records_array = ActiveRecord::Base.connection.execute(sql)
     render json: {
-      'todos':@current_user.todos.sort
+      'todos':records_array
     },status: :ok
   end
 
   def show
+    sql = "select
+           todos.id as id,
+           todos.todo as todo,
+           todos.status as status,
+           categories.id as category_id,
+           categories.name as catName
+           from
+           users
+           join todos on todos.user_id = users.id
+           join categories on todos.category_id = categories.id
+           where
+            users.id = #{@current_user.id}
+           ORDER BY todos.id ASC;"
+
+
+    records_array = ActiveRecord::Base.connection.execute(sql)
+
     render json: {
       "id": @current_user.id,
+      "token": @current_user.token,
       "username": @current_user.username,
       "email": @current_user.email,
       "admin": @current_user.admin,
-      "todos": @current_user.todos.sort,
+      "todos": records_array,
       "created_at": @current_user.created_at,
       "updated_at": @current_user.updated_at
     }, status: :ok
