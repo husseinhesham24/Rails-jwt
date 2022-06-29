@@ -5,7 +5,6 @@ class TodosController < ApplicationController
   def create
     @todo = Todo.new(todo_params_create)
     @todo.user = @current_user
-    debugger
     if @todo.save
       render json: {
         "id": @todo.id,
