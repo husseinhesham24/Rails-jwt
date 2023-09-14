@@ -1,0 +1,29 @@
+version: '1'
+
+services:
+  database:
+    image: postgres:latest
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+  
+  
+  app:
+    build: .
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    tty: true
+    stdin_open: true
+  
+
+volumes:
+  postgresdata: {}

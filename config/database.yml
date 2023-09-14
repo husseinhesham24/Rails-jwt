@@ -17,9 +17,9 @@
 default: &default
   adapter: postgresql
   encoding: utf-8
-  host: localhost
-  username: todolist
-  password: SiV2050;
+  host: <%= ENV.fetch("DATABASE_HOST") %> 
+  username: <%= ENV.fetch("POSTGRES_USER") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
@@ -85,5 +85,3 @@ test:
 production:
   <<: *default
   database: todolist_production
-  username: todolist
-  password: <%= ENV["TODOLIST_DATABASE_PASSWORD"] %>
